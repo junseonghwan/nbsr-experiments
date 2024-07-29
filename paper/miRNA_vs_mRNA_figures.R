@@ -99,13 +99,13 @@ table(microRNAome.dt$cell_type)
 
 ## Print the tables of sample counts for each cell type.
 library(xtable)
-xt <- xtable(recount2.dt[,.N,by=.(cell_type)])
+xt <- xtable(recount2.dt[,.N,by=.(cell_type)], label = "supp-tbl3")
 names(xt) <- c("Cell type", "N")
 print(xt, file = "paper/tables/tbl_recount2.tex", include.rownames=FALSE)
 
-xt <- xtable(microRNAome.dt[,.N,by=.(cell_type)])
+xt <- xtable(microRNAome.dt[,.N,by=.(cell_type)], label = "supp-tbl2")
 names(xt) <- c("Cell type", "N")
-print(xt, file = "../NBSR/paper/tbl_microRNAome_celltypes.tex", include.rownames=FALSE)
+print(xt, file = "paper/tables/tbl_microRNAome_celltypes.tex", include.rownames=FALSE)
 
 ### Cumulative plot
 

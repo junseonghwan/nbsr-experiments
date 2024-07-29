@@ -38,8 +38,8 @@ The simulated data was generated using script `generate_simulation_data.R`.
 
 ## Colon adenocarcinoma cell line analysis
 
-- carcinoma_analysis.R
 - carcinoma_generate_input.R
+- carcinoma_analysis.R
 - carcinoma_supp.R
 
 ## Contact

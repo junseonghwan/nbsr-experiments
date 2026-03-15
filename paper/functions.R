@@ -254,6 +254,7 @@ generate_data <- function(unperturbed_dat, perturbed_dat, n_A, n_B, reads_min_ma
                           alpha_alt_bar = perturbed_dat[,alpha_bar])
   log_fc.dt[,log2_fc := log2(alpha_alt_bar) - log2(alpha_null_bar)]
   log_fc.dt[,log_fc := log(alpha_alt_bar) - log(alpha_null_bar)]
+  log_fc.dt[,absolute_fc := alpha_alt / alpha_null]
   
   rownames(Y) <- unperturbed_dat$miRNA
   colnames(Y) <- sample_names

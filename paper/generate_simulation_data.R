@@ -85,7 +85,7 @@ for (celltype in celltypes)
     zero_out_idx <- sample(low_idx, zero_miRNA_count, replace = F)
     alpha_alt$alpha[zero_out_idx] <- alpha_null$alpha[zero_out_idx] <- 1e-3
     
-    ret <- generate_data(alpha_alt, alpha_null, sample_count, sample_count, reads_min_max = c(seq_depth[1], tail(seq_depth,1)), max_percent_miRNA = 0.5)
+    ret <- generate_data(alpha_null, alpha_alt, sample_count, sample_count, reads_min_max = c(seq_depth[1], tail(seq_depth,1)), max_percent_miRNA = 0.5)
     
     # Output data to run NBSR.
     rep_path <- paste0(output_path, "/", celltype, "/rep", rep_no)

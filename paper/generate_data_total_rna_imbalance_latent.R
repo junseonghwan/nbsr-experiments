@@ -14,7 +14,7 @@ repo_dir <- normalizePath(file.path(dirname(script_file), ".."))
 
 source(file.path(repo_dir, "paper", "dirichlet_estimation_functions.R"))
 source(file.path(repo_dir, "paper", "functions.R"))
-output_root <- file.path(repo_dir, "data", "total_imbalanced")
+output_root <- "/mnt/home/xchen1/nbsr-simulated-data/total_imbalanced"
 
 sample_counts <- 10
 # sample_counts <- c(3, 5, 10)
@@ -96,13 +96,13 @@ for (ll in 1:length(idx_list))
                     ncol = L)
     latent_group <- sample(rep(1:L, length.out = miRNA_count))
     gamma <- matrix(0, nrow = miRNA_count, ncol = L)
-    for (k in 1:L)
+    for (latent_k in 1:L)
     {
-      rows <- which(latent_group == k)
+      rows <- which(latent_group == latent_k)
       mu <- rep(0, L)
-      mu[k] <- group_mean
+      mu[latent_k] <- group_mean
       sds <- rep(other_sd, L)
-      sds[k] <- group_sd
+      sds[latent_k] <- group_sd
       Sigma <- diag(sds^2)
       gamma[rows, ] <- MASS::mvrnorm(n = length(rows), mu = mu, Sigma = Sigma)
     }
@@ -186,19 +186,3 @@ for (ll in 1:length(idx_list))
     }
   }
 }
-
-# Quick PCA plot of the generated loadings for HIGH, sample 10, rep 1.
-gamma_path <- file.path(output_root, "HIGH", "sample_10",
-                        paste0("latent_", L), "rep1")
-gamma_dt <- fread(file.path(gamma_path, "gamma.csv"))
-gamma_mat <- as.matrix(gamma_dt[, paste0("gamma", 1:L), with = FALSE])
-pca <- prcomp(gamma_mat)
-colors <- c("#D55E00", "#0072B2", "#009E73", "#CC79A7", "#E69F00")
-
-pdf(file.path(gamma_path, "gamma_pca.pdf"), width = 6, height = 5)
-plot(pca$x[, 1], pca$x[, 2], col = colors[gamma_dt$latent_group],
-     pch = 16, cex = 0.6, xlab = "PC1", ylab = "PC2",
-     main = "Simulated gamma: HIGH rep 1")
-legend("topright", legend = paste("Group", 1:L), col = colors[1:L],
-       pch = 16, cex = 0.8)
-dev.off()

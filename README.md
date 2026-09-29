@@ -31,6 +31,21 @@ The downloaded data already contains the outputs from NBSR. The script used for 
 
 The simulated data was generated using the script `generate_simulation_data.R`. 
 
+### Latent simulation
+
+The latent extension is `paper/generate_data_total_rna_imbalance_latent.R`. It reads
+`data/microRNAome_dir_params.csv` and `data/hsa.fas`, and sources the two helper
+files in `paper/`. These inputs are included in this repository. Install the R
+packages `data.table`, `MCMCpack`, `seqinr`, and `MASS`, then run from a clone:
+
+```sh
+Rscript paper/generate_data_total_rna_imbalance_latent.R
+```
+
+The script writes the LOW, MED, and HIGH replicates to `data/total_imbalanced/`.
+The bundled `hsa.fas` is the mature human miRNA FASTA from miRGeneDB linked
+above.
+
 ## Immune cell analysis (T CD8 vs B CD19)
 
 - immune_cells.R
@@ -48,4 +63,3 @@ Download the `carcinoma.tar.gz` from Zenodo under `data/`. Then, decompress it, 
 ## Contact
 
 Please raise an issue if any figure cannot be reproduced or is missing from the paper, or if you have questions about running the scripts.
-

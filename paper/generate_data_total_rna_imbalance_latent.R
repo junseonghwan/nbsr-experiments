@@ -1,17 +1,20 @@
 # Same simulation as generate_data_total_rna_imbalance.R, with a latent term
 # added to each sample's log proportions before the Dirichlet draw.
-# Run this script from the simulation folder.
+# From any folder: Rscript /path/to/nbsr-experiments/paper/generate_data_total_rna_imbalance_latent.R
 
 rm(list=ls())
 
 library(data.table)
 library(MCMCpack)
 library(seqinr)
-library(stringr)
+script_arg <- grep("^--file=", commandArgs(trailingOnly = FALSE), value = TRUE)
+if (length(script_arg) == 0) stop("Run this file with Rscript")
+script_file <- sub("^--file=", "", script_arg[1])
+repo_dir <- normalizePath(file.path(dirname(script_file), ".."))
 
-setwd("~/Documents/GitHub/nbsr-benchmarks/simulation")
-source("dirichlet_estimation_functions.R")
-source("functions.R")
+source(file.path(repo_dir, "paper", "dirichlet_estimation_functions.R"))
+source(file.path(repo_dir, "paper", "functions.R"))
+output_root <- file.path(repo_dir, "data", "total_imbalanced")
 
 sample_counts <- 10
 # sample_counts <- c(3, 5, 10)
@@ -27,9 +30,9 @@ group_mean <- 0.5  # center of a group's own loading
 group_sd <- 0.1    # spread of a group's own loading
 other_sd <- 0.05   # small loadings for the other groups
 
-miRNA_polya_est <- fread(file = "microRNAome_dir_params.csv")
+miRNA_polya_est <- fread(file = file.path(repo_dir, "data", "microRNAome_dir_params.csv"))
 # Select features from mirGeneDB.
-mirGeneDB <- read.fasta(file = "hsa.fas")
+mirGeneDB <- read.fasta(file = file.path(repo_dir, "data", "hsa.fas"))
 miRNA_names <- names(mirGeneDB)
 
 lowercase_string <- tolower(miRNA_names)
@@ -58,7 +61,7 @@ for (ll in 1:length(idx_list))
   log_fc_values <- log_folds / (2^ll)
   test_name <- names(idx_list)[ll]
   k <- ks[ll]
-  output_path <- file.path("total_imbalanced", test_name)
+  output_path <- file.path(output_root, test_name)
 
   for (rep_no in 1:rep_count)
   {
@@ -185,7 +188,7 @@ for (ll in 1:length(idx_list))
 }
 
 # Quick PCA plot of the generated loadings for HIGH, sample 10, rep 1.
-gamma_path <- file.path("total_imbalanced", "HIGH", "sample_10",
+gamma_path <- file.path(output_root, "HIGH", "sample_10",
                         paste0("latent_", L), "rep1")
 gamma_dt <- fread(file.path(gamma_path, "gamma.csv"))
 gamma_mat <- as.matrix(gamma_dt[, paste0("gamma", 1:L), with = FALSE])

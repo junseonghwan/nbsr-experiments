@@ -1,11 +1,10 @@
-# Same simulation as generate_data_total_rna_imbalance.R, with a latent term
-# added to each sample's log proportions before the Dirichlet draw.
+# Use the original real-data alpha estimates and simulate:
+# eta ~ Normal(log(alpha), Sigma), pi = softmax(eta), Y ~ Multinomial(M, pi).
 # From any folder: Rscript /path/to/nbsr-experiments/paper/generate_data_total_rna_imbalance_latent.R
 
 rm(list=ls())
 
 library(data.table)
-library(MCMCpack)
 library(seqinr)
 script_arg <- grep("^--file=", commandArgs(trailingOnly = FALSE), value = TRUE)
 if (length(script_arg) == 0) stop("Run this file with Rscript")
@@ -14,7 +13,7 @@ repo_dir <- normalizePath(file.path(dirname(script_file), ".."))
 
 source(file.path(repo_dir, "paper", "dirichlet_estimation_functions.R"))
 source(file.path(repo_dir, "paper", "functions.R"))
-output_root <- "/mnt/home/xchen1/nbsr-simulated-data/total_imbalanced"
+output_root <- file.path(repo_dir, "data", "total_imbalanced_logistic_normal")
 
 sample_counts <- 10
 # sample_counts <- c(3, 5, 10)
@@ -24,12 +23,8 @@ seq_depth <- 10^(6:8)
 ks <- c(20, 10, 5)
 log_folds <- c(1, 10)
 
-# The only new simulation settings are for the latent term.
-L <- 5
-group_mean <- 0.5  # center of a group's own loading
-group_sd <- 0.1    # spread of a group's own loading
-other_sd <- 0.05   # small loadings for the other groups
-
+# These alpha estimates were already fitted to the real microRNAome data,
+# just as in generate_simulation_data.R.
 miRNA_polya_est <- fread(file = file.path(repo_dir, "data", "microRNAome_dir_params.csv"))
 # Select features from mirGeneDB.
 mirGeneDB <- read.fasta(file = file.path(repo_dir, "data", "hsa.fas"))
@@ -55,6 +50,26 @@ idx_list[["LOW"]] <- with(dir_params, which(alpha_hat > 1 & alpha_hat <= 10))
 idx_list[["MED"]] <- with(dir_params, which(alpha_hat >= 10 & alpha_hat < 50))
 idx_list[["HIGH"]] <- with(dir_params, which(alpha_hat > 50))
 
+# Estimate the covariance of log proportions from the same 42 CD4 samples.
+# Match the count rows to the alpha rows before calculating anything.
+real_counts <- readRDS(file.path(repo_dir, "data", "microRNAome_cd4_counts.rds"))
+stopifnot(all(dir_params$miRNA %in% rownames(real_counts)))
+real_counts <- real_counts[dir_params$miRNA, , drop = FALSE]
+expressed <- rowSums(real_counts) > 0
+
+# Use the same smoothing as estimate_dirichlet() to avoid log(0).
+# cov() centers each miRNA across samples; there is no extra CLR step.
+real_props <- apply(real_counts + 1e-6, 2, normalize)
+Sigma <- cov(t(log(real_props)))
+
+# All-zero miRNAs have no observed variation to estimate. Give them zero
+# covariance rather than variation caused only by the pseudocount.
+Sigma[!expressed, ] <- 0
+Sigma[, !expressed] <- 0
+dimnames(Sigma) <- list(dir_params$miRNA, dir_params$miRNA)
+if (!dir.exists(output_root)) dir.create(output_root, recursive = TRUE)
+saveRDS(Sigma, file.path(output_root, "Sigma.rds"))
+
 for (ll in 1:length(idx_list))
 {
   idx_set <- idx_list[[ll]]
@@ -76,7 +91,8 @@ for (ll in 1:length(idx_list))
     fold_changes <- 2^runif(n = k, min = log_fc_values[1], max = log_fc_values[2])
     alpha_alt$alpha_hat[idxs] <- fold_changes * alpha_null$alpha_hat[idxs]
 
-    # Zero out some miRNAs from expression.
+    # Give 200 low-abundance miRNAs a small baseline in both conditions.
+    # As in the original script, 1e-3 does not force their counts to be zero.
     zero_out_idx <- sample(which(alpha_null$alpha_hat < 1 & alpha_alt$alpha_hat < 1),
                            zero_miRNA_count, replace = FALSE)
 
@@ -87,40 +103,17 @@ for (ll in 1:length(idx_list))
     alpha_null[,alpha_bar := normalize(alpha)]
     alpha_alt[,alpha_bar := normalize(alpha)]
 
-    # Draw latent parameters once per replicate, like the fold changes above.
-    # Each miRNA belongs to one of L groups. Its loading for that group is
-    # near group_mean; the other loadings are small and centered at zero.
-    # This is a Gaussian mixture for the rows of gamma, with diagonal covariance.
-    # The group sizes differ by at most one when miRNA_count is not divisible by L.
-    z_all <- matrix(rnorm(2 * max(sample_counts) * L, mean = 0, sd = 1),
-                    ncol = L)
-    latent_group <- sample(rep(1:L, length.out = miRNA_count))
-    gamma <- matrix(0, nrow = miRNA_count, ncol = L)
-    for (latent_k in 1:L)
-    {
-      rows <- which(latent_group == latent_k)
-      mu <- rep(0, L)
-      mu[latent_k] <- group_mean
-      sds <- rep(other_sd, L)
-      sds[latent_k] <- group_sd
-      Sigma <- diag(sds^2)
-      gamma[rows, ] <- MASS::mvrnorm(n = length(rows), mu = mu, Sigma = Sigma)
-    }
-
     for (sample_count in sample_counts)
     {
       n <- 2 * sample_count
       rep_path <- file.path(output_path, paste0("sample_", sample_count),
-                            paste0("latent_", L), paste0("rep", rep_no))
+                            paste0("rep", rep_no))
 
-      z <- z_all[1:n, , drop = FALSE]
-
-      # Same Dirichlet -> multinomial sampling as the original simulation.
-      # The only change is the sample-specific Dirichlet mean.
-      s_null <- sum(alpha_null$alpha)
-      s_alt <- sum(alpha_alt$alpha)
-      log_pi_null <- log(alpha_null$alpha_bar)
-      log_pi_alt <- log(alpha_alt$alpha_bar)
+      # Sample eta directly with the same covariance in both conditions.
+      # mvrnorm uses an eigen decomposition, so Sigma may be singular.
+      eta_null <- MASS::mvrnorm(sample_count, mu = log(alpha_null$alpha), Sigma = Sigma)
+      eta_alt <- MASS::mvrnorm(sample_count, mu = log(alpha_alt$alpha), Sigma = Sigma)
+      eta <- t(rbind(eta_null, eta_alt))  # miRNAs x samples
       trt <- c(rep("null", sample_count), rep("alt", sample_count))
       Y <- matrix(0, nrow = miRNA_count, ncol = n)
       lib_size <- rep(0, n)
@@ -128,16 +121,8 @@ for (ll in 1:length(idx_list))
 
       for (i in 1:n)
       {
-        if (trt[i] == "null") {
-          eta <- log_pi_null + as.vector(gamma %*% z[i, ])
-          s <- s_null
-        } else {
-          eta <- log_pi_alt + as.vector(gamma %*% z[i, ])
-          s <- s_alt
-        }
-        pi_mean <- exp(eta - max(eta))
-        pi_mean <- pi_mean / sum(pi_mean)
-        pi_i <- as.vector(rdirichlet(1, s * pi_mean))
+        pi_i <- exp(eta[, i] - max(eta[, i]))
+        pi_i <- pi_i / sum(pi_i)
 
         lib_size[i] <- runif(1, min = seq_depth[1], max = tail(seq_depth, 1))
         percent_miRNA <- runif(1, 0, 0.5)
@@ -147,6 +132,7 @@ for (ll in 1:length(idx_list))
 
       rownames(Y) <- dir_params$miRNA
       colnames(Y) <- paste0("Sample", 1:n)
+      dimnames(eta) <- dimnames(Y)
       X <- data.table(sample = paste0("Sample", 1:n), trt = trt,
                       lib_size = lib_size, miRNA_reads = size_factor)
 
@@ -159,13 +145,16 @@ for (ll in 1:length(idx_list))
                        alpha_alt_bar = alpha_alt$alpha_bar)
       fc[,log2_fc := log2(alpha_alt_bar) - log2(alpha_null_bar)]
       fc[,log_fc := log(alpha_alt_bar) - log(alpha_null_bar)]
+      fc[,absolute_fc := alpha_alt / alpha_null]
 
       # Output data to run NBSR, in the same format as the original script.
       if (!dir.exists(rep_path)) {
         dir.create(rep_path, recursive = TRUE)
       }
       row_idxs <- rowSums(Y > 0) > 1
-      Y <- Y[row_idxs,]
+      Y <- Y[row_idxs, , drop = FALSE]
+      fc <- fc[row_idxs]
+      eta <- eta[row_idxs, , drop = FALSE]
       X$miRNA_capture <- X$miRNA_reads / X$lib_size
 
       fwrite(X, file = file.path(rep_path, "X.csv"))
@@ -173,16 +162,9 @@ for (ll in 1:length(idx_list))
                   col.names = TRUE, row.names = TRUE, sep = ",")
       fwrite(fc, file = file.path(rep_path, "fc.csv"))
 
-      # These two files record the latent truth for postprocessing.
-      gamma_dt <- cbind(data.table(miRNA = dir_params$miRNA,
-                                   latent_group = latent_group), as.data.table(gamma))
-      setnames(gamma_dt, c("miRNA", "latent_group", paste0("gamma", 1:L)))
-      fwrite(gamma_dt, file = file.path(rep_path, "gamma.csv"))
-
-      z_dt <- cbind(data.table(sample = paste0("Sample", 1:n), trt = trt),
-                    as.data.table(z))
-      setnames(z_dt, c("sample", "trt", paste0("z", 1:L)))
-      fwrite(z_dt, file = file.path(rep_path, "z.csv"))
+      # Keep the simulated log abundances as truth for later comparisons.
+      write.table(eta, file = file.path(rep_path, "eta.csv"), quote = FALSE,
+                  col.names = TRUE, row.names = TRUE, sep = ",")
     }
   }
 }

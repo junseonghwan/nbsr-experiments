@@ -33,16 +33,32 @@ The simulated data was generated using the script `generate_simulation_data.R`.
 
 ### Latent simulation
 
-The latent extension is `paper/generate_data_total_rna_imbalance_latent.R`. It reads
-`data/microRNAome_dir_params.csv` and `data/hsa.fas`, and sources the two helper
-files in `paper/`. These inputs are included in this repository. Install the R
-packages `data.table`, `MCMCpack`, `seqinr`, and `MASS`, then run from a clone:
+The latent extension is `paper/generate_data_total_rna_imbalance_latent.R`. It uses
+the existing alpha estimates in `data/microRNAome_dir_params.csv`, the feature
+filter in `data/hsa.fas`, and real counts in `data/microRNAome_cd4_counts.rds`.
+These inputs are included in this repository. Install the R packages
+`data.table`, `seqinr`, and `MASS`, then run from a clone:
 
 ```sh
 Rscript paper/generate_data_total_rna_imbalance_latent.R
 ```
 
-The script writes the LOW, MED, and HIGH replicates to `data/total_imbalanced/`.
+The script estimates covariance from log proportions in the 42 real CD4 samples,
+then draws `eta ~ Normal(log(alpha), Sigma)`, sets `pi = softmax(eta)`, and draws
+multinomial counts. There is no additional Dirichlet draw or simulated z/gamma.
+It uses the full covariance, with no PCA truncation or within-sample CLR step.
+All-zero real features receive zero covariance. The pseudocount is `1e-6`, as
+in the original alpha-estimation helper; it can strongly affect sparse features.
+
+The LOW, MED, and HIGH replicates go to `data/total_imbalanced_logistic_normal/`,
+under `<case>/sample_<n>/rep<r>/`. Each replicate contains `X.csv`, `Y.csv`,
+`fc.csv`, and `eta.csv`; `Sigma.rds` is saved once at the output root, with miRNA
+names on both dimensions. `Y.csv`, `fc.csv`, and `eta.csv` use the same retained
+miRNAs. The settings remain 20 replicates and 10 samples per condition.
+The old postprocessor that reads `z.csv` and `gamma.csv` needs adaptation to
+use `eta.csv` for this generator.
+
+See [CD4 data provenance](data/microRNAome_cd4_README.md) for the source and filters.
 The bundled `hsa.fas` is the mature human miRNA FASTA from miRGeneDB linked
 above.
 

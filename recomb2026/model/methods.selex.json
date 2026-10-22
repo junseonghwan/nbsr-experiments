@@ -1,0 +1,247 @@
+{
+  "nbsr-hmc": {
+    "model": "nbsr",
+    "algorithm": "hmc",
+    "stan_stem": "nbsr",
+    "beta_var": "beta_raw",
+    "extra_vars": [
+      "b_0",
+      "b_j",
+      "sigma_bj",
+      "b_pi",
+      "b_w"
+    ],
+    "resources": {
+      "sample": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      },
+      "postprocess": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      }
+    },
+    "sampler": {
+      "iter_warmup": 1000,
+      "iter_sampling": 4000
+    }
+  },
+  "nbsr-hmc-wideint": {
+    "model": "nbsr",
+    "algorithm": "hmc",
+    "stan_stem": "nbsr",
+    "beta_var": "beta_raw",
+    "extra_vars": [
+      "b_0",
+      "b_j",
+      "sigma_bj",
+      "b_pi",
+      "b_w"
+    ],
+    "resources": {
+      "sample": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      },
+      "postprocess": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      }
+    },
+    "sampler": {
+      "iter_warmup": 1000,
+      "iter_sampling": 4000
+    },
+    "priors": {
+      "sigma_beta2_intercept": 100
+    }
+  },
+  "nbsr_latent-hmc": {
+    "model": "nbsr_latent",
+    "algorithm": "hmc",
+    "stan_stem": "nbsr_latent",
+    "beta_var": "beta_raw",
+    "extra_vars": [
+      "gamma_raw",
+      "z",
+      "sigma_beta2"
+    ],
+    "resources": {
+      "sample": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      },
+      "postprocess": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      }
+    },
+    "sampler": {
+      "iter_warmup": 1000,
+      "iter_sampling": 6000
+    }
+  },
+  "nbsr-laplace": {
+    "model": "nbsr",
+    "algorithm": "laplace",
+    "stan_stem": "nbsr",
+    "beta_var": "beta",
+    "extra_vars": [],
+    "resources": {
+      "sample": {
+        "cpus": 1,
+        "mem_per_cpu": "3G"
+      },
+      "postprocess": {
+        "cpus": 1,
+        "mem_per_cpu": "3G"
+      }
+    },
+    "laplace": {
+      "iterations": 20000,
+      "lr": 0.05,
+      "draws": 16000,
+      "runs": 1
+    }
+  },
+  "nbsr-laplace-wideint": {
+    "model": "nbsr",
+    "algorithm": "laplace",
+    "stan_stem": "nbsr",
+    "beta_var": "beta",
+    "extra_vars": [],
+    "resources": {
+      "sample": {
+        "cpus": 1,
+        "mem_per_cpu": "3G"
+      },
+      "postprocess": {
+        "cpus": 1,
+        "mem_per_cpu": "3G"
+      }
+    },
+    "laplace": {
+      "iterations": 20000,
+      "lr": 0.05,
+      "draws": 16000,
+      "runs": 1
+    },
+    "priors": {
+      "sigma_beta2_intercept": 100
+    }
+  },
+  "nbsr-laplace-eb": {
+    "model": "nbsr",
+    "algorithm": "laplace",
+    "stan_stem": "nbsr",
+    "beta_var": "beta",
+    "extra_vars": [],
+    "resources": {
+      "sample": {
+        "cpus": 1,
+        "mem_per_cpu": "3G"
+      },
+      "postprocess": {
+        "cpus": 1,
+        "mem_per_cpu": "3G"
+      }
+    },
+    "laplace": {
+      "iterations": 20000,
+      "lr": 0.05,
+      "draws": 16000,
+      "runs": 1,
+      "beta_prior": "empirical",
+      "prior_quantile": 0.95
+    }
+  },
+  "nbsr-laplace-wsample_wideint": {
+    "model": "nbsr",
+    "algorithm": "laplace",
+    "stan_stem": "nbsr",
+    "beta_var": "beta",
+    "extra_vars": [],
+    "resources": {
+      "sample": {
+        "cpus": 1,
+        "mem_per_cpu": "3G"
+      },
+      "postprocess": {
+        "cpus": 1,
+        "mem_per_cpu": "3G"
+      }
+    },
+    "laplace": {
+      "iterations": 20000,
+      "lr": 0.05,
+      "draws": 16000,
+      "runs": 1
+    },
+    "priors": {
+      "sigma_beta2_intercept": 100
+    },
+    "dispersion_covariates": [
+      "sample"
+    ]
+  },
+  "nbsr-laplace-wdepth_wideint": {
+    "model": "nbsr",
+    "algorithm": "laplace",
+    "stan_stem": "nbsr",
+    "beta_var": "beta",
+    "extra_vars": [],
+    "resources": {
+      "sample": {
+        "cpus": 1,
+        "mem_per_cpu": "3G"
+      },
+      "postprocess": {
+        "cpus": 1,
+        "mem_per_cpu": "3G"
+      }
+    },
+    "laplace": {
+      "iterations": 20000,
+      "lr": 0.05,
+      "draws": 16000,
+      "runs": 1
+    },
+    "priors": {
+      "sigma_beta2_intercept": 100
+    },
+    "dispersion_covariates": [
+      "log_depth"
+    ]
+  },
+  "nbsr-hmc-eb": {
+    "model": "nbsr",
+    "algorithm": "hmc",
+    "stan_stem": "nbsr",
+    "beta_var": "beta_raw",
+    "extra_vars": [
+      "b_0",
+      "b_j",
+      "sigma_bj",
+      "b_pi",
+      "b_w"
+    ],
+    "resources": {
+      "sample": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      },
+      "postprocess": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      }
+    },
+    "sampler": {
+      "iter_warmup": 1000,
+      "iter_sampling": 4000
+    },
+    "priors": {
+      "sigma_beta2": 4.65738474086887,
+      "sigma_beta2_intercept": 0.9045055719142592
+    }
+  }
+}

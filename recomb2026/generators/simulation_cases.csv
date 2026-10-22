@@ -1,0 +1,4 @@
+case,seed_id,n_high,n_med,n_low,direction,description
+ALL25,1,5,10,10,up,25 genera perturbed upward; compositional shift present
+ALL50,2,10,20,20,up,50 genera perturbed upward; dense signal strains the sparsity assumption
+BAL50,3,10,20,20,balanced,50 genera perturbed; half up and half down within each stratum (5/5 HIGH; 10/10 MED; 10/10 LOW); near-zero shift

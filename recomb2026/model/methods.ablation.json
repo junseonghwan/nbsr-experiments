@@ -1,0 +1,896 @@
+{
+  "nbsr-hmc-base": {
+    "model": "nbsr",
+    "algorithm": "hmc",
+    "stan_stem": "nbsr",
+    "beta_var": "beta_raw",
+    "extra_vars": [
+      "b_0",
+      "b_j",
+      "sigma_bj",
+      "b_pi",
+      "b_w"
+    ],
+    "priors": {
+      "sigma_beta2": 2.0,
+      "b_pi_loc": 1.0,
+      "b_pi_scale": 0.1
+    },
+    "resources": {
+      "sample": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      },
+      "postprocess": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      }
+    },
+    "sampler": {
+      "iter_warmup": 1000,
+      "iter_sampling": 4000
+    }
+  },
+  "nbsr-hmc-sb1": {
+    "model": "nbsr",
+    "algorithm": "hmc",
+    "stan_stem": "nbsr",
+    "beta_var": "beta_raw",
+    "extra_vars": [
+      "b_0",
+      "b_j",
+      "sigma_bj",
+      "b_pi",
+      "b_w"
+    ],
+    "priors": {
+      "sigma_beta2": 1.0,
+      "b_pi_loc": 1.0,
+      "b_pi_scale": 0.1
+    },
+    "resources": {
+      "sample": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      },
+      "postprocess": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      }
+    },
+    "sampler": {
+      "iter_warmup": 1000,
+      "iter_sampling": 4000
+    }
+  },
+  "nbsr-hmc-bpi1": {
+    "model": "nbsr",
+    "algorithm": "hmc",
+    "stan_stem": "nbsr",
+    "beta_var": "beta_raw",
+    "extra_vars": [
+      "b_0",
+      "b_j",
+      "sigma_bj",
+      "b_pi",
+      "b_w"
+    ],
+    "priors": {
+      "sigma_beta2": 1.0,
+      "b_pi_loc": 1.0,
+      "b_pi_scale": 1.0
+    },
+    "resources": {
+      "sample": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      },
+      "postprocess": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      }
+    },
+    "sampler": {
+      "iter_warmup": 1000,
+      "iter_sampling": 4000
+    }
+  },
+  "nbsr_nobj-hmc": {
+    "model": "nbsr_nobj",
+    "algorithm": "hmc",
+    "stan_stem": "nbsr_nobj",
+    "beta_var": "beta_raw",
+    "extra_vars": [
+      "b_0",
+      "b_pi",
+      "b_w"
+    ],
+    "priors": {
+      "sigma_beta2": 1.0,
+      "b_pi_loc": 1.0,
+      "b_pi_scale": 0.1
+    },
+    "resources": {
+      "sample": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      },
+      "postprocess": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      }
+    },
+    "sampler": {
+      "iter_warmup": 1000,
+      "iter_sampling": 4000
+    }
+  },
+  "nbsr-hmc-wtrt": {
+    "model": "nbsr",
+    "algorithm": "hmc",
+    "stan_stem": "nbsr",
+    "beta_var": "beta_raw",
+    "extra_vars": [
+      "b_0",
+      "b_j",
+      "sigma_bj",
+      "b_pi",
+      "b_w"
+    ],
+    "priors": {
+      "sigma_beta2": 1.0,
+      "b_pi_loc": 1.0,
+      "b_pi_scale": 0.1
+    },
+    "dispersion_covariates": [
+      "trt"
+    ],
+    "resources": {
+      "sample": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      },
+      "postprocess": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      }
+    },
+    "sampler": {
+      "iter_warmup": 1000,
+      "iter_sampling": 4000
+    }
+  },
+  "nbsr_nobj-hmc-wtrt": {
+    "model": "nbsr_nobj",
+    "algorithm": "hmc",
+    "stan_stem": "nbsr_nobj",
+    "beta_var": "beta_raw",
+    "extra_vars": [
+      "b_0",
+      "b_pi",
+      "b_w"
+    ],
+    "priors": {
+      "sigma_beta2": 1.0,
+      "b_pi_loc": 1.0,
+      "b_pi_scale": 0.1
+    },
+    "dispersion_covariates": [
+      "trt"
+    ],
+    "resources": {
+      "sample": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      },
+      "postprocess": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      }
+    },
+    "sampler": {
+      "iter_warmup": 1000,
+      "iter_sampling": 4000
+    }
+  },
+  "nbsr_disp-hmc-nopi_wtrt": {
+    "model": "nbsr_disp",
+    "algorithm": "hmc",
+    "stan_stem": "nbsr_disp",
+    "beta_var": "beta_raw",
+    "extra_vars": [
+      "b_0",
+      "b_j",
+      "sigma_bj",
+      "b_pi",
+      "b_w"
+    ],
+    "priors": {
+      "sigma_beta2": 1.0,
+      "b_pi_loc": 1.0,
+      "b_pi_scale": 0.1
+    },
+    "dispersion_pi": "none",
+    "dispersion_covariates": [
+      "trt"
+    ],
+    "resources": {
+      "sample": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      },
+      "postprocess": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      }
+    },
+    "sampler": {
+      "iter_warmup": 1000,
+      "iter_sampling": 4000
+    }
+  },
+  "nbsr_disp-hmc-pi0_wtrt": {
+    "model": "nbsr_disp",
+    "algorithm": "hmc",
+    "stan_stem": "nbsr_disp",
+    "beta_var": "beta_raw",
+    "extra_vars": [
+      "b_0",
+      "b_j",
+      "sigma_bj",
+      "b_pi",
+      "b_w"
+    ],
+    "priors": {
+      "sigma_beta2": 1.0,
+      "b_pi_loc": 1.0,
+      "b_pi_scale": 0.1
+    },
+    "dispersion_pi": "baseline",
+    "dispersion_covariates": [
+      "trt"
+    ],
+    "resources": {
+      "sample": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      },
+      "postprocess": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      }
+    },
+    "sampler": {
+      "iter_warmup": 1000,
+      "iter_sampling": 4000
+    }
+  },
+  "nbsr_disp-hmc-pi0": {
+    "model": "nbsr_disp",
+    "algorithm": "hmc",
+    "stan_stem": "nbsr_disp",
+    "beta_var": "beta_raw",
+    "extra_vars": [
+      "b_0",
+      "b_j",
+      "sigma_bj",
+      "b_pi",
+      "b_w"
+    ],
+    "priors": {
+      "sigma_beta2": 1.0,
+      "b_pi_loc": 1.0,
+      "b_pi_scale": 0.1
+    },
+    "dispersion_pi": "baseline",
+    "resources": {
+      "sample": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      },
+      "postprocess": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      }
+    },
+    "sampler": {
+      "iter_warmup": 1000,
+      "iter_sampling": 4000
+    }
+  },
+  "nbsr_disp-hmc-piobs_wtrt": {
+    "model": "nbsr_disp",
+    "algorithm": "hmc",
+    "stan_stem": "nbsr_disp",
+    "beta_var": "beta_raw",
+    "extra_vars": [
+      "b_0",
+      "b_j",
+      "sigma_bj",
+      "b_pi",
+      "b_w"
+    ],
+    "priors": {
+      "sigma_beta2": 1.0,
+      "b_pi_loc": 1.0,
+      "b_pi_scale": 0.1
+    },
+    "dispersion_pi": "observed",
+    "dispersion_covariates": [
+      "trt"
+    ],
+    "resources": {
+      "sample": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      },
+      "postprocess": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      }
+    },
+    "sampler": {
+      "iter_warmup": 1000,
+      "iter_sampling": 4000
+    }
+  },
+  "nbsr_disp-hmc-piobs": {
+    "model": "nbsr_disp",
+    "algorithm": "hmc",
+    "stan_stem": "nbsr_disp",
+    "beta_var": "beta_raw",
+    "extra_vars": [
+      "b_0",
+      "b_j",
+      "sigma_bj",
+      "b_pi",
+      "b_w"
+    ],
+    "priors": {
+      "sigma_beta2": 1.0,
+      "b_pi_loc": 1.0,
+      "b_pi_scale": 0.1
+    },
+    "dispersion_pi": "observed",
+    "resources": {
+      "sample": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      },
+      "postprocess": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      }
+    },
+    "sampler": {
+      "iter_warmup": 1000,
+      "iter_sampling": 4000
+    }
+  },
+  "nbsr_disp-hmc-bjtrt": {
+    "model": "nbsr_disp",
+    "algorithm": "hmc",
+    "stan_stem": "nbsr_disp",
+    "beta_var": "beta_raw",
+    "extra_vars": [
+      "b_0",
+      "b_j",
+      "sigma_bj",
+      "b_pi",
+      "b_w"
+    ],
+    "priors": {
+      "sigma_beta2": 1.0,
+      "b_pi_loc": 1.0,
+      "b_pi_scale": 0.1
+    },
+    "dispersion_pi": "sample",
+    "bj_scope": "trt",
+    "resources": {
+      "sample": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      },
+      "postprocess": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      }
+    },
+    "sampler": {
+      "iter_warmup": 1000,
+      "iter_sampling": 4000
+    }
+  },
+  "nbsr_disp-hmc-bjgamma": {
+    "model": "nbsr_disp",
+    "algorithm": "hmc",
+    "stan_stem": "nbsr_disp",
+    "beta_var": "beta_raw",
+    "extra_vars": [
+      "b_0",
+      "b_j",
+      "sigma_bj",
+      "b_pi",
+      "b_w",
+      "gamma",
+      "sigma_gamma"
+    ],
+    "priors": {
+      "sigma_beta2": 1.0,
+      "b_pi_loc": 1.0,
+      "b_pi_scale": 0.1
+    },
+    "dispersion_pi": "sample",
+    "gamma_trt": true,
+    "resources": {
+      "sample": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      },
+      "postprocess": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      }
+    },
+    "sampler": {
+      "iter_warmup": 1000,
+      "iter_sampling": 4000
+    }
+  },
+  "nbsr_disp-hmc-bjgamma_wtrt": {
+    "model": "nbsr_disp",
+    "algorithm": "hmc",
+    "stan_stem": "nbsr_disp",
+    "beta_var": "beta_raw",
+    "extra_vars": [
+      "b_0",
+      "b_j",
+      "sigma_bj",
+      "b_pi",
+      "b_w",
+      "gamma",
+      "sigma_gamma"
+    ],
+    "priors": {
+      "sigma_beta2": 1.0,
+      "b_pi_loc": 1.0,
+      "b_pi_scale": 0.1
+    },
+    "dispersion_pi": "sample",
+    "gamma_trt": true,
+    "dispersion_covariates": [
+      "trt"
+    ],
+    "resources": {
+      "sample": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      },
+      "postprocess": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      }
+    },
+    "sampler": {
+      "iter_warmup": 1000,
+      "iter_sampling": 4000
+    }
+  },
+  "nbsr_hs-hmc": {
+    "model": "nbsr_hs",
+    "algorithm": "hmc",
+    "stan_stem": "nbsr_hs",
+    "beta_var": "beta_raw",
+    "extra_vars": [
+      "b_0",
+      "b_j",
+      "sigma_bj",
+      "b_pi",
+      "b_w",
+      "tau",
+      "c",
+      "lambda"
+    ],
+    "priors": {
+      "sigma_beta2": 1.0,
+      "b_pi_loc": 1.0,
+      "b_pi_scale": 0.1,
+      "hs_tau0": 0.03,
+      "hs_slab_scale": 2.0,
+      "hs_slab_df": 4.0
+    },
+    "resources": {
+      "sample": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      },
+      "postprocess": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      }
+    },
+    "sampler": {
+      "iter_warmup": 1000,
+      "iter_sampling": 4000,
+      "adapt_delta": 0.99
+    }
+  },
+  "nbsr_oracle-hmc": {
+    "model": "nbsr_oracle",
+    "algorithm": "hmc",
+    "stan_stem": "nbsr_oracle",
+    "beta_var": "beta_raw",
+    "extra_vars": [],
+    "priors": {
+      "sigma_beta2": 1.0,
+      "b_pi_loc": 1.0,
+      "b_pi_scale": 0.1
+    },
+    "resources": {
+      "sample": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      },
+      "postprocess": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      }
+    },
+    "sampler": {
+      "iter_warmup": 1000,
+      "iter_sampling": 4000
+    }
+  },
+  "nbsr_oracle-hmc-wideint": {
+    "model": "nbsr_oracle",
+    "algorithm": "hmc",
+    "stan_stem": "nbsr_oracle",
+    "beta_var": "beta_raw",
+    "extra_vars": [],
+    "priors": {
+      "sigma_beta2": 1.0,
+      "b_pi_loc": 1.0,
+      "b_pi_scale": 0.1,
+      "sigma_beta2_intercept": 100.0
+    },
+    "resources": {
+      "sample": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      },
+      "postprocess": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      }
+    },
+    "sampler": {
+      "iter_warmup": 1000,
+      "iter_sampling": 4000
+    }
+  },
+  "nbsr-hmc-wideint": {
+    "model": "nbsr",
+    "algorithm": "hmc",
+    "stan_stem": "nbsr",
+    "beta_var": "beta_raw",
+    "extra_vars": [
+      "b_0",
+      "b_j",
+      "sigma_bj",
+      "b_pi",
+      "b_w"
+    ],
+    "priors": {
+      "sigma_beta2": 1.0,
+      "b_pi_loc": 1.0,
+      "b_pi_scale": 0.1,
+      "sigma_beta2_intercept": 100.0
+    },
+    "resources": {
+      "sample": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      },
+      "postprocess": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      }
+    },
+    "sampler": {
+      "iter_warmup": 1000,
+      "iter_sampling": 4000
+    }
+  },
+  "nbsr-hmc-refabund": {
+    "model": "nbsr",
+    "algorithm": "hmc",
+    "stan_stem": "nbsr",
+    "beta_var": "beta_raw",
+    "extra_vars": [
+      "b_0",
+      "b_j",
+      "sigma_bj",
+      "b_pi",
+      "b_w"
+    ],
+    "priors": {
+      "sigma_beta2": 1.0,
+      "b_pi_loc": 1.0,
+      "b_pi_scale": 0.1
+    },
+    "resources": {
+      "sample": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      },
+      "postprocess": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      }
+    },
+    "sampler": {
+      "iter_warmup": 1000,
+      "iter_sampling": 4000
+    },
+    "reference": "abundant"
+  },
+  "nbsr_oracle-hmc-refabund": {
+    "model": "nbsr_oracle",
+    "algorithm": "hmc",
+    "stan_stem": "nbsr_oracle",
+    "beta_var": "beta_raw",
+    "extra_vars": [],
+    "priors": {
+      "sigma_beta2": 1.0,
+      "b_pi_loc": 1.0,
+      "b_pi_scale": 0.1
+    },
+    "resources": {
+      "sample": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      },
+      "postprocess": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      }
+    },
+    "sampler": {
+      "iter_warmup": 1000,
+      "iter_sampling": 4000
+    },
+    "reference": "abundant"
+  },
+  "nbsr-hmc-wtrt_wideint": {
+    "model": "nbsr",
+    "algorithm": "hmc",
+    "stan_stem": "nbsr",
+    "beta_var": "beta_raw",
+    "extra_vars": [
+      "b_0",
+      "b_j",
+      "sigma_bj",
+      "b_pi",
+      "b_w"
+    ],
+    "priors": {
+      "sigma_beta2": 1.0,
+      "b_pi_loc": 1.0,
+      "b_pi_scale": 0.1,
+      "sigma_beta2_intercept": 100.0
+    },
+    "dispersion_covariates": [
+      "trt"
+    ],
+    "resources": {
+      "sample": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      },
+      "postprocess": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      }
+    },
+    "sampler": {
+      "iter_warmup": 1000,
+      "iter_sampling": 4000
+    }
+  },
+  "nbsr-laplace-nopivot": {
+    "model": "nbsr",
+    "algorithm": "laplace",
+    "stan_stem": "nbsr",
+    "beta_var": "beta",
+    "extra_vars": [],
+    "resources": {
+      "sample": {
+        "cpus": 1,
+        "mem_per_cpu": "3G"
+      },
+      "postprocess": {
+        "cpus": 1,
+        "mem_per_cpu": "3G"
+      }
+    },
+    "laplace": {
+      "iterations": 20000,
+      "lr": 0.05,
+      "draws": 16000,
+      "runs": 1
+    }
+  },
+  "nbsr-laplace-nopivot_wideint": {
+    "model": "nbsr",
+    "algorithm": "laplace",
+    "stan_stem": "nbsr",
+    "beta_var": "beta",
+    "extra_vars": [],
+    "resources": {
+      "sample": {
+        "cpus": 1,
+        "mem_per_cpu": "3G"
+      },
+      "postprocess": {
+        "cpus": 1,
+        "mem_per_cpu": "3G"
+      }
+    },
+    "laplace": {
+      "iterations": 20000,
+      "lr": 0.05,
+      "draws": 16000,
+      "runs": 1
+    },
+    "priors": {
+      "sigma_beta2_intercept": 100
+    }
+  },
+  "nbsr-laplace-wideint": {
+    "model": "nbsr",
+    "algorithm": "laplace",
+    "stan_stem": "nbsr",
+    "beta_var": "beta",
+    "extra_vars": [],
+    "resources": {
+      "sample": {
+        "cpus": 1,
+        "mem_per_cpu": "3G"
+      },
+      "postprocess": {
+        "cpus": 1,
+        "mem_per_cpu": "3G"
+      }
+    },
+    "laplace": {
+      "iterations": 20000,
+      "lr": 0.05,
+      "draws": 16000,
+      "runs": 1
+    },
+    "priors": {
+      "sigma_beta2_intercept": 100
+    }
+  },
+  "nbsr_offset-hmc": {
+    "model": "nbsr_offset",
+    "algorithm": "hmc",
+    "stan_stem": "nbsr_offset",
+    "beta_var": "beta_raw",
+    "extra_vars": [
+      "b_0",
+      "b_j",
+      "sigma_bj",
+      "b_pi",
+      "b_w"
+    ],
+    "priors": {
+      "sigma_beta2": 1.0,
+      "b_pi_loc": 1.0,
+      "b_pi_scale": 0.1
+    },
+    "resources": {
+      "sample": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      },
+      "postprocess": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      }
+    },
+    "sampler": {
+      "iter_warmup": 1000,
+      "iter_sampling": 4000
+    }
+  },
+  "nbsr_offset-hmc-wideint": {
+    "model": "nbsr_offset",
+    "algorithm": "hmc",
+    "stan_stem": "nbsr_offset",
+    "beta_var": "beta_raw",
+    "extra_vars": [
+      "b_0",
+      "b_j",
+      "sigma_bj",
+      "b_pi",
+      "b_w"
+    ],
+    "priors": {
+      "sigma_beta2": 1.0,
+      "b_pi_loc": 1.0,
+      "b_pi_scale": 0.1,
+      "sigma_beta2_intercept": 100.0
+    },
+    "resources": {
+      "sample": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      },
+      "postprocess": {
+        "cpus": 4,
+        "mem_per_cpu": "3G"
+      }
+    },
+    "sampler": {
+      "iter_warmup": 1000,
+      "iter_sampling": 4000
+    }
+  },
+  "nbsr-laplace-wtrt_wideint": {
+    "model": "nbsr",
+    "algorithm": "laplace",
+    "stan_stem": "nbsr",
+    "beta_var": "beta",
+    "extra_vars": [],
+    "resources": {
+      "sample": {
+        "cpus": 1,
+        "mem_per_cpu": "3G"
+      },
+      "postprocess": {
+        "cpus": 1,
+        "mem_per_cpu": "3G"
+      }
+    },
+    "laplace": {
+      "iterations": 20000,
+      "lr": 0.05,
+      "draws": 16000,
+      "runs": 1
+    },
+    "priors": {
+      "sigma_beta2_intercept": 100
+    },
+    "dispersion_covariates": [
+      "trt"
+    ]
+  },
+  "nbsr-laplace-wideint_bpiwide": {
+    "model": "nbsr",
+    "algorithm": "laplace",
+    "stan_stem": "nbsr",
+    "beta_var": "beta",
+    "extra_vars": [],
+    "resources": {
+      "sample": {
+        "cpus": 1,
+        "mem_per_cpu": "3G"
+      },
+      "postprocess": {
+        "cpus": 1,
+        "mem_per_cpu": "3G"
+      }
+    },
+    "laplace": {
+      "iterations": 20000,
+      "lr": 0.05,
+      "draws": 16000,
+      "runs": 1
+    },
+    "priors": {
+      "sigma_beta2_intercept": 100,
+      "b_pi_scale": 1.0
+    }
+  }
+}

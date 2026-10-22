@@ -64,9 +64,9 @@ Download the `carcinoma.tar.gz` from Zenodo under `data/`. Then, decompress it, 
 
 Please raise an issue if any figure cannot be reproduced or is missing from the paper, or if you have questions about running the scripts.
 
-## RECOMB 2026: Bayesian compositional differential abundance with NBSR
+## Bayesian compositional differential abundance with NBSR
 
-The reproduction material for the compositional paper is under [`recomb2026/`](recomb2026/): scripts
+The reproduction material for the compositional differential-abundance paper is under [`compositional/`](compositional/): scripts
 that rebuild every table and figure from the released per-feature outputs (Zenodo DOI to be added),
 the generators of the simulated miRNA and microbiome benchmarks, the SELEX and stool-study inputs, and
-the Stan models with their settings. See `recomb2026/README.md`.
+the Stan models with their settings. See `compositional/README.md`.

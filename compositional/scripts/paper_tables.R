@@ -1,8 +1,8 @@
 #!/usr/bin/env Rscript
 # Rebuild the paper's tables from the released per-feature outputs (the Zenodo deposit).
 #
-#   Rscript recomb2026/scripts/paper_tables.R [<data_dir>] [<out_dir>]
-#   defaults: recomb2026/data/outputs (the unpacked deposit) and recomb2026/tables
+#   Rscript compositional/scripts/paper_tables.R [<data_dir>] [<out_dir>]
+#   defaults: compositional/data/outputs (the unpacked deposit) and compositional/tables
 #
 # Every table that the paper computes from per-feature summaries is written as a CSV and collected in tables.md:
 #   table1_mirna.csv         Table 1: TPR / FDR at each method's own rule and 95% coverage of the perturbed
@@ -26,8 +26,8 @@
 # the fitted composition (tab:regularise) and Figure 2.
 suppressPackageStartupMessages(library(data.table))
 args <- commandArgs(trailingOnly = TRUE)
-data_dir <- if (length(args) >= 1) args[1] else "recomb2026/data/outputs"
-out <- if (length(args) >= 2) args[2] else "recomb2026/tables"; dir.create(out, showWarnings = FALSE, recursive = TRUE)
+data_dir <- if (length(args) >= 1) args[1] else "compositional/data/outputs"
+out <- if (length(args) >= 2) args[2] else "compositional/tables"; dir.create(out, showWarnings = FALSE, recursive = TRUE)
 ALPHA <- 0.05; LFSR_THR <- 1e-3; LFSR_TOL <- 1e-9
 read_gz <- function(f) fread(cmd = paste("gzip -dc", shQuote(f)))
 read_set <- function(stem) {   # a dataset released as one or several files

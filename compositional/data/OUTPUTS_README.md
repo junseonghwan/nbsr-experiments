@@ -61,7 +61,7 @@ columns.
 
 `paper_tables.R` and `make_paper_figures.R` rebuild the paper's tables and figures from these files
 (`Rscript paper_tables.R <this directory> <output directory>`, likewise for the figures; they are the
-scripts of `recomb2026/` in <https://github.com/junseonghwan/nbsr-experiments>, which also holds the
+scripts of `compositional/` in <https://github.com/junseonghwan/nbsr-experiments>, which also holds the
 generators of the simulated inputs and the Stan models). `paper_inputs.tar.gz`, deposited beside this
 directory, holds the simulated and prepared inputs of every fit (`Y.csv`, `X.csv`, `fc.csv` per
 replicate).

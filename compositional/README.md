@@ -1,4 +1,4 @@
-# Reproducing "Bayesian compositional differential abundance with negative binomial softmax regression" (RECOMB 2026 submission)
+# Reproducing "Bayesian compositional differential abundance with negative binomial softmax regression"
 
 Everything the paper reports comes from fits of NBSR (<https://github.com/junseonghwan/nbsr>) and of
 six published methods to simulated and real sequencing data. This directory holds what is needed to
@@ -7,14 +7,14 @@ simulated inputs, and to refit the models.
 
 ## 1. Rebuild the tables and figures from the released outputs
 
-Download the outputs deposit from Zenodo (DOI to be added) and unpack it as `recomb2026/data/outputs/`.
+Download the outputs deposit from Zenodo (DOI to be added) and unpack it as `compositional/data/outputs/`.
 It holds one gzipped CSV per benchmark with one row per method, simulation case, sample size,
 replicate and feature, unfiltered (every feature a method reported, with a `tested` flag), plus a
 README with the column dictionary and `SHA256SUMS`. Then, from the repository root:
 
 ```bash
-Rscript recomb2026/scripts/paper_tables.R          # -> recomb2026/tables/*.csv and tables.md
-Rscript recomb2026/scripts/make_paper_figures.R    # -> recomb2026/figures/
+Rscript compositional/scripts/paper_tables.R          # -> compositional/tables/*.csv and tables.md
+Rscript compositional/scripts/make_paper_figures.R    # -> compositional/figures/
 ```
 
 Both need R with `data.table`, `ggplot2` and `ragg`, and `gzip` on the path. `paper_tables.R`

@@ -1,8 +1,8 @@
 #!/usr/bin/env Rscript
 # Rebuild the paper's benchmark figures from the released per-feature outputs (the Zenodo deposit).
 #
-#   Rscript recomb2026/scripts/make_paper_figures.R [<data_dir>] [<out_dir>]
-#   defaults: recomb2026/data/outputs (the unpacked deposit) and recomb2026/figures
+#   Rscript compositional/scripts/make_paper_figures.R [<data_dir>] [<out_dir>]
+#   defaults: compositional/data/outputs (the unpacked deposit) and compositional/figures
 #
 # Inputs (one row per method x case x n x replicate x feature, unfiltered; see the deposit's README):
 #   mirna_{nbsr,compositional,countbased}_features.csv.gz   miRNA benchmark: NBSR (HMC, Laplace); LinDA, ALDEx2, ANCOM-BC(2); DESeq2, edgeR
@@ -17,8 +17,8 @@
 # and the compositional-shift toy figure is drawn, not computed.
 suppressPackageStartupMessages({ library(data.table); library(ggplot2) })
 args <- commandArgs(trailingOnly = TRUE)
-data_dir <- if (length(args) >= 1) args[1] else "recomb2026/data/outputs"
-out <- if (length(args) >= 2) args[2] else "recomb2026/figures"; dir.create(out, showWarnings = FALSE, recursive = TRUE)
+data_dir <- if (length(args) >= 1) args[1] else "compositional/data/outputs"
+out <- if (length(args) >= 2) args[2] else "compositional/figures"; dir.create(out, showWarnings = FALSE, recursive = TRUE)
 blue <- "#2a78d6"; orange <- "#eb6834"; grey_m <- "#8a8985"; grey_l <- "#c3c2bb"; ink <- "#0b0b0b"; ink2 <- "#52514e"; grid_col <- "#e6e5e0"
 labels <- c("nbsr-hmc" = "NBSR (HMC)", "nbsr-laplace" = "NBSR (Laplace)", "nbsr-laplace-wideint" = "NBSR (Laplace)",
             "linda" = "LinDA", "aldex2" = "ALDEx2", "ancombc" = "ANCOM-BC", "ancombc2" = "ANCOM-BC2",
